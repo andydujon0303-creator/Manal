@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💛 Mission Manal 💛</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#ffe45e,#ffd000);
+overflow:hidden;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:20px;
+width:90%;
+max-width:500px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+z-index:10;
+position:relative;
+}
+
+button{
+padding:12px 18px;
+border:none;
+border-radius:12px;
+background:#ffbf00;
+color:white;
+margin-top:10px;
+cursor:pointer;
+font-size:16px;
+}
+
+input{
+padding:10px;
+width:80%;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+.hidden{display:none;}
+
+#msg{margin-top:10px;font-weight:bold;}
+
+.heart,.banana{
+position:fixed;
+top:-20px;
+font-size:20px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+.title{
+color:#ffbf00;
+}
+
+.small{
+color:#444;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<div id="start">
+<h1 class="title">💛 Mission Manal 💛</h1>
+<p class="small">Une petite aventure t’attend 🍌</p>
+<button onclick="start()">Commencer</button>
+</div>
+
+<div id="game" class="hidden">
+<h2 id="q"></h2>
+<input id="a" placeholder="Ta réponse...">
+<button onclick="check()">Valider</button>
+<p id="msg"></p>
+</div>
+
+<div id="end" class="hidden">
+<h1>💛 Bravo Manal 💛</h1>
+<p>
+Tu as terminé l’aventure...
+<br><br>
+Certaines personnes rendent les jours meilleurs sans s’en rendre compte.
+<br><br>
+Toi, tu fais partie de ces personnes-là.
+<br><br>
+💌 — Andy
+</p>
+</div>
+
+</div>
+
+<script>
+
+let step=0;
+
+const questions=[
+{
+q:"Je peux être brisé sans être touché. Qui suis-je ?",
+a:["silence","le silence"]
+},
+{
+q:"Plus on m’en prend, plus je grandis. Qui suis-je ?",
+a:["trou","un trou"]
+},
+{
+q:"Je parle sans bouche. Qui suis-je ?",
+a:["echo","écho","l'echo","l’écho"]
+}
+];
+
+function start(){
+document.getElementById("start").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
+show();
+spawnEffects();
+}
+
+function show(){
+document.getElementById("q").innerText=questions[step].q;
+}
+
+function check(){
+let val=document.getElementById("a").value.toLowerCase().trim();
+
+if(questions[step].a.includes(val)){
+step++;
+document.getElementById("msg").innerText="🍌 Bien joué Manal 😏";
+
+if(step>=questions.length){
+win();
+}else{
+show();
+document.getElementById("a").value="";
+}
+}else{
+document.getElementById("msg").innerText="😂 Nope... réfléchis comme Andy pense à toi";
+}
+}
+
+function win(){
+document.getElementById("game").classList.add("hidden");
+document.getElementById("end").classList.remove("hidden");
+spawnConfetti();
+}
+
+function spawnEffects(){
+setInterval(()=>{
+let e=document.createElement("div");
+e.className="heart";
+e.innerHTML="❤️";
+e.style.left=Math.random()*100+"vw";
+e.style.animationDuration=(3+Math.random()*3)+"s";
+document.body.appendChild(e);
+setTimeout(()=>e.remove(),6000);
+},400);
+}
+
+function spawnConfetti(){
+for(let i=0;i<50;i++){
+let c=document.createElement("div");
+c.className="banana";
+c.innerHTML=Math.random()>0.5?"🍌":"💛";
+c.style.left=Math.random()*100+"vw";
+c.style.animationDuration=(2+Math.random()*3)+"s";
+c.style.fontSize=(15+Math.random()*20)+"px";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),5000);
+}
+}
+
+</script>
+
+</body>
+</html>
